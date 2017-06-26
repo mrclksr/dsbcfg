@@ -93,7 +93,7 @@ static struct parser_s {
 void
 dsbcfg_printerr()
 {
-	int i;
+	unsigned int i;
 
 	if (_error.errcode == -1)
 		return;
@@ -128,7 +128,7 @@ dsbcfg_printerr()
 const char *
 dsbcfg_strerror()
 {
-	int	    i;
+	unsigned int i;
 	static char strbuf[1024 + sizeof(_error.prfx)], *p;
 	
 	p = strbuf; *p = '\0';
