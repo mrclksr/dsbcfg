@@ -365,6 +365,28 @@ error:
 	return (NULL);
 }
 
+char **
+dsbcfg_list_to_strings(const char *str, bool *error)
+{
+	char *buf, *p, **v;
+
+	*error = false;
+	if (str == NULL)
+		return (NULL);
+	if ((buf = strdup(str)) == NULL) {
+		seterr(DSBCFG_ERR_SYS_ERROR, "strdup()");
+		return (NULL);
+	}
+	for (v = NULL, p = buf; (p = cutok(p, error)) != NULL; p = NULL) {
+		if (add_string(&v, p) == NULL) {
+			free(buf); free(v);
+			return (NULL);
+		}
+	}
+	free(buf);
+	return (*error ? NULL : v);
+}
+
 dsbcfg_t *
 dsbcfg_new(const char *label, dsbcfg_vardef_t *vardefs, int nvardefs)
 {
@@ -593,7 +615,8 @@ cutok(char *str, bool *error)
 		parser.needline = false;
 		parser.pbuf = start = strdup(str);
 		if (parser.pbuf == NULL) {
-			*error = true; seterr(DSBCFG_ERR_SYS_ERROR, "strdup()");
+			*error = true;
+			seterr(DSBCFG_ERR_SYS_ERROR, "strdup()");
 			return (NULL);
 		}		
 	} else if (parser.needline) {
@@ -800,9 +823,6 @@ parse_line(char *str, dsbcfg_vardef_t *vardefs, int nvardefs,
 		seterr(DSBCFG_ERR_MISSING_SEP, NULL); return (-1);
 	}
 	*val++ = '\0'; val += strspn(val, " \t\n");
-	if (*val == '\0' || isspace(*val)) {
-		seterr(DSBCFG_ERR_MISSING_VAL, NULL); return (-1);
-	}
 	for (i = 0; i < nvardefs; i++) {
 		if (strcmp(var, vardefs[i].name) != 0)
 			continue;

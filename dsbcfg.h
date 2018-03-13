@@ -92,6 +92,7 @@ extern int	  dsbcfg_setval(dsbcfg_t *, int, dsbcfg_val_t);
 extern void	  dsbcfg_free(dsbcfg_t *);
 extern void	  dsbcfg_printerr(void);
 extern void	  dsbcfg_delnode(dsbcfg_t **, const char *);
+extern char 	  **dsbcfg_list_to_strings(const char *, bool *);
 extern char	  *dsbcfg_mkdir(const char *);
 extern dsbcfg_t	  *dsbcfg_new(const char *, dsbcfg_vardef_t *, int);
 extern dsbcfg_t	  *dsbcfg_read(const char *, const char *, dsbcfg_vardef_t *,
