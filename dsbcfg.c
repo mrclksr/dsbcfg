@@ -847,8 +847,10 @@ parse_line(char *str, dsbcfg_vardef_t *vardefs, int nvardefs,
 				return (-1);
 			break;
 		case DSBCFG_VAR_STRING:
-			if ((p = cutok(val, &error)) == NULL)
+			if ((p = cutok(val, &error)) == NULL && error)
 				return (-1);
+			if (p == NULL)
+				p = "";
 			free(_vars[id].val.string);
 			if ((_vars[id].val.string = strdup(p)) == NULL) {
 				seterr(DSBCFG_ERR_SYS_ERROR, "strdup()");
