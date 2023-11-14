@@ -83,12 +83,16 @@ typedef struct dsbcfg_s {
 	struct dsbcfg_s	*next;	/* Pointer to next section */
 } dsbcfg_t;
 
-#define DSBCFG_VAL(V)		(dsbcfg_val_t)V
+#define DSBCFG_VAL(V)		(dsbcfg_val_t)(V)
 #define dsbcfg_getval(CFG, VID)	(CFG->vars[VID].val)
 #define dsbcfg_varname(CFG, VID)(CFG->vars[VID].name)
 __BEGIN_DECLS
 extern int	  dsbcfg_write(const char *, const char *, const dsbcfg_t *);
 extern int	  dsbcfg_setval(dsbcfg_t *, int, dsbcfg_val_t);
+extern int	  dsbcfg_set_string(dsbcfg_t *, int, const char *);
+extern int	  dsbcfg_set_strings(dsbcfg_t *, int, char * const *);
+extern int	  dsbcfg_set_int(dsbcfg_t *, int, int);
+extern int	  dsbcfg_set_bool(dsbcfg_t *, int, bool);
 extern void	  dsbcfg_free(dsbcfg_t *);
 extern void	  dsbcfg_printerr(void);
 extern void	  dsbcfg_delnode(dsbcfg_t **, const char *);

@@ -497,6 +497,58 @@ dsbcfg_addnode(dsbcfg_t *cfg, const char *label, dsbcfg_vardef_t *vardefs,
 }
 
 int
+dsbcfg_set_string(dsbcfg_t *node, int vid, const char *str)
+{
+	if (node->vars[vid].type != DSBCFG_VAR_STRING)
+		return (-1);
+	free(node->vars[vid].val.string);
+	if ((node->vars[vid].val.string = strdup(str)) == NULL) {
+		seterr(DSBCFG_ERR_SYS_ERROR, "strdup()");
+		return (-1);
+	}
+	return (0);
+}
+
+int
+dsbcfg_set_strings(dsbcfg_t *node, int vid, char * const *strings)
+{
+	char * const *pp;
+
+	if (node->vars[vid].type != DSBCFG_VAR_STRINGS)
+		return (-1);
+	for (pp = node->vars[vid].val.strings;
+	     pp != NULL && *pp != NULL; pp++)
+		free(*pp);
+	free(node->vars[vid].val.strings);
+	node->vars[vid].val.strings = NULL;
+	for (pp = strings; pp != NULL && *pp != NULL; pp++) {
+		if (add_string(&node->vars[vid].val.strings, *pp) == NULL)
+			return (-1);
+	}
+	return (0);
+}
+
+int
+dsbcfg_set_int(dsbcfg_t *node, int vid, int val)
+{
+	if (node->vars[vid].type != DSBCFG_VAR_INTEGER)
+		return (-1);
+	node->vars[vid].val.integer = val;
+
+	return (0);
+}
+
+int
+dsbcfg_set_bool(dsbcfg_t *node, int vid, bool val)
+{
+	if (node->vars[vid].type != DSBCFG_VAR_BOOLEAN)
+		return (-1);
+	node->vars[vid].val.boolean = val;
+
+	return (0);
+}
+
+int
 dsbcfg_setval(dsbcfg_t *node, int vid, dsbcfg_val_t val)
 {
 	char **pp;
