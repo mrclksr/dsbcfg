@@ -84,8 +84,8 @@ typedef struct dsbcfg_s {
 } dsbcfg_t;
 
 #define DSBCFG_VAL(V)		(dsbcfg_val_t)(V)
-#define dsbcfg_getval(CFG, VID)	(CFG->vars[VID].val)
-#define dsbcfg_varname(CFG, VID)(CFG->vars[VID].name)
+#define dsbcfg_getval(CFG, VID)	((CFG)->vars[VID].val)
+#define dsbcfg_varname(CFG, VID)((CFG)->vars[VID].name)
 __BEGIN_DECLS
 extern int	  dsbcfg_write(const char *, const char *, const dsbcfg_t *);
 extern int	  dsbcfg_setval(dsbcfg_t *, int, dsbcfg_val_t);
